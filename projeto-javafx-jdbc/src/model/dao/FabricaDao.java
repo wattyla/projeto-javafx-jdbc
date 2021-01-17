@@ -4,7 +4,7 @@ import db.DB;
 import model.dao.impl.DepartamentoDaoJDBC;
 import model.dao.impl.VendedorDaoJDBC;
 
-public class DaoFabrica {
+public class FabricaDao {
 	
 	public static VendedorDao criaVendedorDao() {
 		return new VendedorDaoJDBC(DB.getConnection());

@@ -5,11 +5,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import gui.util.Utils;
-
 import application.Main;
 import db.DbException;
+import gui.ouvintes.OuvinteMudancaDados;
 import gui.util.Alertas;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,12 +25,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.dao.DepartamentoDao;
 import model.entidades.Departamento;
+import model.servico.ServicoDepartamento;
 
-public class ListaDepartamentoControle implements Initializable {
+public class ListaDepartamentoControle implements Initializable, OuvinteMudancaDados {
 
-	private DepartamentoDao departamentoDao;
+	private ServicoDepartamento servicoDepartamento;
 	
 	private  ObservableList<Departamento> obsListaDepartamento;
 	@FXML
@@ -65,16 +65,16 @@ public class ListaDepartamentoControle implements Initializable {
 		tableViewDepartamento.prefHeightProperty().bind(stage.heightProperty());
 	}
 
-	public void setDepartamentoDao(DepartamentoDao departamentoDao) {
-		this.departamentoDao = departamentoDao;
+	public void setServicoDepartamento(ServicoDepartamento servicoDepartamento) {
+		this.servicoDepartamento = servicoDepartamento;
 	}
 
 	public void atualizaTableViewDepartamento() {
-		if (departamentoDao == null) {
-			throw new DbException("O departamentoDao ainda esta null");
+		if (servicoDepartamento == null) {
+			throw new DbException("O servicoDepartamento ainda esta null");
 		}
 		
-		List<Departamento> listaDepartamentos = departamentoDao.cunsultaTodos();
+		List<Departamento> listaDepartamentos = servicoDepartamento.retornaTodosDeparamentos();
 		
 		obsListaDepartamento = FXCollections.observableArrayList(listaDepartamentos);
 		
@@ -88,6 +88,8 @@ public class ListaDepartamentoControle implements Initializable {
 			
 			FormularioDepartamentoControle formularioDepartamentoControle = loader.getController();
 			formularioDepartamentoControle.setDepartamento(departamento);
+			formularioDepartamentoControle.tornarOuvinteMudancaDados(this);
+			formularioDepartamentoControle.setServicoDepartamento(new ServicoDepartamento());
 			formularioDepartamentoControle.atulizaDadosFormulario();
 			
 			Stage palcoDialogo = new Stage();
@@ -101,5 +103,10 @@ public class ListaDepartamentoControle implements Initializable {
 		} catch (IOException e) {
 			Alertas.showAlert("Erro de leitura/Escrita", "Erro ao carregar a tela", e.getMessage(), AlertType.ERROR);
 		}
+	}
+
+	@Override
+	public void onMudancaDados() {
+		atualizaTableViewDepartamento();
 	}
 }

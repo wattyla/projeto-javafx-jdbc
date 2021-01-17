@@ -16,12 +16,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.dao.VendedorDao;
 import model.entidades.Vendedor;
+import model.servico.ServicoVendedor;
 
 public class ListaVendedorControle implements Initializable {
 	
-	private VendedorDao vendedorDao;
+	private ServicoVendedor servicoVendedor;
 	
 	private  ObservableList<Vendedor> obsListaVendedor;
 	
@@ -66,16 +66,16 @@ public class ListaVendedorControle implements Initializable {
 		tableViewVendedor.prefHeightProperty().bind(stage.heightProperty());
 	}
 
-	public void setVendedorDao(VendedorDao vendedorDao) {
-		this.vendedorDao = vendedorDao;
+	public void setServicoVendedor(ServicoVendedor servicoVendedor) {
+		this.servicoVendedor = servicoVendedor;
 	}
 
 	public void atualizaTableViewVendedor() {
-		if (vendedorDao == null) {
+		if (servicoVendedor == null) {
 			throw new DbException("O departamentoDao ainda esta null");
 		}
 		
-		List<Vendedor> listaVendedor = vendedorDao.cunsultaTodos();
+		List<Vendedor> listaVendedor = servicoVendedor.retornaTodosVendedores();
 		
 		obsListaVendedor = FXCollections.observableArrayList(listaVendedor);
 		

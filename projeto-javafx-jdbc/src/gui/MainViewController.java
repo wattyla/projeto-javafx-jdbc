@@ -16,7 +16,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import model.dao.DaoFabrica;
+import model.servico.ServicoDepartamento;
+import model.servico.ServicoVendedor;
 
 public class MainViewController implements Initializable {
 
@@ -30,7 +31,7 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void onMenuItemVendedorAction() {
 		carregarTela("/gui/ListaVendedor.fxml", (ListaVendedorControle controle) -> {
-			controle.setVendedorDao(DaoFabrica.criaVendedorDao());
+			controle.setServicoVendedor(new ServicoVendedor());
 			controle.atualizaTableViewVendedor();
 		});
 	}
@@ -38,7 +39,7 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void onMenuItemDepartamentoAction() {
 		carregarTela("/gui/ListaDepartamento.fxml", (ListaDepartamentoControle controle) -> {
-			controle.setDepartamentoDao(DaoFabrica.criaDepartamentoDao());
+			controle.setServicoDepartamento(new ServicoDepartamento());
 			controle.atualizaTableViewDepartamento();
 		});
 	}
